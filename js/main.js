@@ -23,6 +23,50 @@ document.querySelectorAll('.faq-question').forEach(q => {
   });
 });
 
+// Audience popup — fires once per session after user scrolls past hero (homepage only)
+(function () {
+  const popup   = document.getElementById('audiencePopup');
+  const overlay = document.getElementById('audienceOverlay');
+  if (!popup || !overlay) return;
+  if (sessionStorage.getItem('audienceSeen')) return;
+
+  const closeBtn = document.getElementById('popupClose');
+  const skipBtn  = document.getElementById('popupSkip');
+
+  function showPopup() {
+    popup.classList.add('visible');
+    overlay.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  }
+  function hidePopup() {
+    popup.classList.remove('visible');
+    overlay.classList.remove('visible');
+    document.body.style.overflow = '';
+    sessionStorage.setItem('audienceSeen', '1');
+  }
+
+  let fired = false;
+  window.addEventListener('scroll', function onScroll() {
+    if (fired) return;
+    if (window.scrollY > window.innerHeight * 0.65) {
+      fired = true;
+      showPopup();
+      window.removeEventListener('scroll', onScroll);
+    }
+  }, { passive: true });
+
+  if (closeBtn) closeBtn.addEventListener('click', hidePopup);
+  if (skipBtn)  skipBtn.addEventListener('click', hidePopup);
+  overlay.addEventListener('click', hidePopup);
+
+  document.querySelectorAll('.popup-choice').forEach(function (c) {
+    c.addEventListener('click', function () {
+      sessionStorage.setItem('audienceSeen', '1');
+      document.body.style.overflow = '';
+    });
+  });
+}());
+
 // Contact form submission (placeholder — wire to backend or email service)
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
