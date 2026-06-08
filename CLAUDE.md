@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Static marketing website for **Rosales Law Partners LLP** — a San Francisco law firm specializing in small business legal services, government contracts, and DBE/SBE/LBE certifications.
+Static marketing website for **Rosales Law Partners LLP** — a San Francisco law firm serving two distinct audiences: government agencies (primary) and the small businesses those agencies contract with. Core differentiator: Managing Partner Mara E. Rosales was General Counsel of SFO for 10+ years.
 
 - **Live deployment:** GitHub Pages (`https://rpulagala.github.io/0605-Lome-rosaleslawpartners/`)
 - **Target domain:** `rosaleslawpartners.com` (DNS not yet pointed)
@@ -24,38 +24,40 @@ npx serve .
 
 ## Architecture
 
-Pure vanilla HTML/CSS/JS — no frameworks.
+Pure vanilla HTML/CSS/JS — no frameworks. `.nojekyll` at root enables GitHub Pages static serving.
 
 ```
-index.html                       Homepage
+index.html                       Homepage (dual-audience split + audience popup)
 whyus.html / our-team.html       Firm credibility pages
-areas-of-practice.html           Services (7 practice areas)
-news.html                        News index page
+areas-of-practice.html           Services (7 practice areas — 3 existing + 4 pending client confirmation)
+for-agencies.html                Dedicated page for government agency audience
+news.html                        News index
 news/*.html                      Three full articles (drafted, pending client review)
-faq.html / resources.html        New pages added to original site
+faq.html / resources.html        Added pages (not on original site)
 contact.html                     Contact form (submission not yet wired)
 css/styles.css                   Single shared stylesheet
-js/main.js                       Mobile nav toggle, FAQ accordion, contact form stub
-images/                          4 locally-hosted images (Unsplash license)
+js/main.js                       Mobile nav, FAQ accordion, audience popup, contact form stub
+images/                          4 locally-hosted images (Unsplash license, from original site)
 ```
 
-Every page shares the same header/footer HTML pattern. There is no templating — changes to nav or footer must be applied to every `.html` file manually.
+Every page shares the same header/footer HTML. No templating — nav or footer changes must be applied to every `.html` file manually.
 
 ## CSS conventions
 
-All design tokens are CSS custom properties defined at the top of `css/styles.css`:
+All design tokens are CSS custom properties at the top of `css/styles.css`:
 
 | Variable | Value | Use |
 |---|---|---|
-| `--navy` | `#1c3557` | Primary brand color, headings |
-| `--gold` | `#c9a84c` | Accent, CTA highlights |
-| `--ph-bg / --ph-border` | `#fff8e1 / #f59e0b` | Placeholder card styling |
+| `--navy` / `--navy-dark` / `--navy-light` | `#1c3557` / `#122540` / `#2e5fa3` | Primary brand, dark headers, link color |
+| `--gold` / `--gold-light` | `#c9a84c` / `#f5e9c8` | Accent, CTA highlights |
+| `--light-bg` / `--mid-bg` | `#f7f9fc` / `#edf1f7` | Alternating section backgrounds |
+| `--ph-bg` / `--ph-border` / `--ph-text` | `#fff8e1` / `#f59e0b` / `#7c5c00` | Placeholder card styling |
 
-Layout uses `.container` (max 1140px), `.grid-2/3/4`, and `.section` / `.section-light` / `.section-navy` classes. Responsive breakpoints are in `styles.css` — check before adding new layout.
+Layout: `.container` (max 1140px), `.grid-2/3/4`, `.section` / `.section-light` / `.section-mid` / `.section-navy`. Responsive breakpoints are in `styles.css` — check before adding new layout rules.
 
 ## Placeholders
 
-Content that awaits client input uses this pattern:
+Content awaiting client input uses this pattern:
 
 ```html
 <div class="placeholder-card">
@@ -64,14 +66,15 @@ Content that awaits client input uses this pattern:
 </div>
 ```
 
-Inline comments `<!-- PLACEHOLDER: ... -->` also mark pending spots throughout the HTML files. See `PROJECT_CONTEXT.md` for the full placeholder inventory.
+Inline `<!-- PLACEHOLDER: ... -->` comments also mark pending spots. Full inventory is in `PROJECT_CONTEXT.md`.
 
 ## JS responsibilities (`js/main.js`)
 
 - Mobile hamburger nav toggle (`.hamburger` → `nav ul.open`)
 - Active nav link highlighting based on `window.location.href`
 - FAQ accordion (`.faq-item` / `.faq-question` / `.open` class)
-- Contact form stub — currently prevents default and shows success state; **not wired to any backend**
+- Audience popup on homepage — fires once per session after user scrolls 65% past hero; controlled by `#audiencePopup`, `#audienceOverlay`, `sessionStorage('audienceSeen')`
+- Contact form stub — prevents default and shows success state; **not wired to any backend**
 
 ## Pending integrations
 
