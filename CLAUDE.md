@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Static marketing website for **Rosales Law Partners LLP** — a San Francisco law firm serving two distinct audiences: government agencies (primary) and the small businesses those agencies contract with. Core differentiator: Managing Partner Mara E. Rosales was General Counsel of SFO for 10+ years.
+Static marketing website for **Rosales Law Partners LLP** — a San Francisco law firm serving three distinct audiences: government agencies (primary), small businesses (secondary), and small business consortiums/advocacy groups (tertiary). Core differentiator: Managing Partner Mara E. Rosales was General Counsel of SFO for 10+ years.
 
 - **Live deployment:** GitHub Pages (`https://rpulagala.github.io/0605-Lome-rosaleslawpartners/`)
 - **Target domain:** `rosaleslawpartners.com` (DNS not yet pointed)
@@ -27,10 +27,11 @@ npx serve .
 Pure vanilla HTML/CSS/JS — no frameworks. `.nojekyll` at root enables GitHub Pages static serving.
 
 ```
-index.html                       Homepage (dual-audience split + audience popup)
-whyus.html / our-team.html       Firm credibility pages
-areas-of-practice.html           Services (7 practice areas — 3 existing + 4 pending client confirmation)
+index.html                       Homepage (3-audience split + audience popup — 3 choices)
+whyus.html / our-team.html       Firm credibility pages (whyus has 120+ stat, awards placeholders)
+areas-of-practice.html           Services (3 core + 3 specialized + 4 general pending confirmation)
 for-agencies.html                Dedicated page for government agency audience
+for-consortiums.html             Dedicated page for consortiums & advocacy groups (added 2026-06-07)
 news.html                        News index
 news/*.html                      Three full articles (drafted, pending client review)
 faq.html / resources.html        Added pages (not on original site)
@@ -73,7 +74,7 @@ Inline `<!-- PLACEHOLDER: ... -->` comments also mark pending spots. Full invent
 - Mobile hamburger nav toggle (`.hamburger` → `nav ul.open`)
 - Active nav link highlighting based on `window.location.href`
 - FAQ accordion (`.faq-item` / `.faq-question` / `.open` class)
-- Audience popup on homepage — fires once per session after user scrolls 65% past hero; controlled by `#audiencePopup`, `#audienceOverlay`, `sessionStorage('audienceSeen')`
+- Audience popup on homepage — fires once per session after user scrolls 65% past hero; controlled by `#audiencePopup`, `#audienceOverlay`, `sessionStorage('audienceSeen')`; has 3 choices (agencies, small business, consortiums)
 - Contact form stub — prevents default and shows success state; **not wired to any backend**
 
 ## Pending integrations
